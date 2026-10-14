@@ -1,0 +1,163 @@
+{
+  "wire_version": 1,
+  "byte_order": "little-endian",
+  "crc_check": {
+    "ascii": "123456789",
+    "crc_hex": "f4"
+  },
+  "cases": [
+    {
+      "name": "valid_swing",
+      "hex": "44 01 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a 5f",
+      "expected_error": null,
+      "expected": {
+        "type": 1,
+        "flags": 3,
+        "sequence": 42,
+        "deviceTimeMs": 123456,
+        "eventId": 7,
+        "kind": 1,
+        "power": 80,
+        "yawCdeg": -1250,
+        "pitchCdeg": 300,
+        "battery": 90
+      }
+    },
+    {
+      "name": "valid_button",
+      "hex": "44 01 02 03 2a 00 40 e2 01 00 07 00 01 00 00 00 00 00 5a e0",
+      "expected_error": null,
+      "expected": {
+        "type": 2,
+        "kind": 1
+      }
+    },
+    {
+      "name": "valid_status",
+      "hex": "44 01 03 03 2a 00 40 e2 01 00 00 00 00 00 00 00 00 00 ff 2b",
+      "expected_error": null,
+      "expected": {
+        "type": 3,
+        "eventId": 0,
+        "battery": 255
+      }
+    },
+    {
+      "name": "valid_calibrate",
+      "hex": "44 01 80 00 01 00 00 00 00 00 09 00 00 00 00 00 00 00 ff 9b",
+      "expected_error": null,
+      "expected": {
+        "type": 128,
+        "eventId": 9
+      }
+    },
+    {
+      "name": "valid_ack_failed",
+      "hex": "44 01 81 03 2a 00 40 e2 01 00 09 00 03 00 00 00 00 00 5a 8e",
+      "expected_error": null,
+      "expected": {
+        "type": 129,
+        "kind": 3,
+        "eventId": 9
+      }
+    },
+    {
+      "name": "bad_crc",
+      "hex": "44 01 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a 5e",
+      "expected_error": "BAD_CRC",
+      "expected": null
+    },
+    {
+      "name": "short_packet",
+      "hex": "44 01 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a",
+      "expected_error": "INVALID_LENGTH",
+      "expected": null
+    },
+    {
+      "name": "bad_magic",
+      "hex": "45 01 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a 89",
+      "expected_error": "INVALID_MAGIC",
+      "expected": null
+    },
+    {
+      "name": "unsupported_version",
+      "hex": "44 02 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a 21",
+      "expected_error": "UNSUPPORTED_VERSION",
+      "expected": null
+    },
+    {
+      "name": "invalid_type",
+      "hex": "44 01 7f 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a a5",
+      "expected_error": "INVALID_TYPE",
+      "expected": null
+    },
+    {
+      "name": "invalid_kind",
+      "hex": "44 01 01 03 2a 00 40 e2 01 00 07 00 04 50 1e fb 2c 01 5a f5",
+      "expected_error": "INVALID_KIND",
+      "expected": null
+    },
+    {
+      "name": "reserved_flags",
+      "hex": "44 01 01 08 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a 49",
+      "expected_error": "INVALID_FLAGS",
+      "expected": null
+    },
+    {
+      "name": "power_out_of_range",
+      "hex": "44 01 01 03 2a 00 40 e2 01 00 07 00 01 65 1e fb 2c 01 5a 77",
+      "expected_error": "OUT_OF_RANGE",
+      "expected": null
+    },
+    {
+      "name": "yaw_out_of_range",
+      "hex": "44 01 01 03 2a 00 40 e2 01 00 07 00 01 50 51 46 2c 01 5a c1",
+      "expected_error": "OUT_OF_RANGE",
+      "expected": null
+    },
+    {
+      "name": "pitch_out_of_range",
+      "hex": "44 01 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 29 23 5a 1b",
+      "expected_error": "OUT_OF_RANGE",
+      "expected": null
+    },
+    {
+      "name": "battery_out_of_range",
+      "hex": "44 01 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 65 e2",
+      "expected_error": "OUT_OF_RANGE",
+      "expected": null
+    },
+    {
+      "name": "uncalibrated_swing",
+      "hex": "44 01 01 02 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a 5d",
+      "expected_error": null,
+      "expected": {
+        "type": 1,
+        "flags": 2,
+        "gameInputAllowed": false
+      }
+    }
+  ],
+  "sequence_cases": [
+    {
+      "old": 65535,
+      "new": 0,
+      "relation": "new"
+    },
+    {
+      "old": 42,
+      "new": 42,
+      "relation": "duplicate"
+    },
+    {
+      "old": 42,
+      "new": 41,
+      "relation": "old"
+    },
+    {
+      "old": 10,
+      "new": 32778,
+      "relation": "old"
+    }
+  ]
+}
