@@ -4,7 +4,9 @@
 
 ## 현재 상태
 
-개발 계획과 초기 문서가 준비된 단계입니다. 제품 코드는 아직 구현되지 않았습니다. 실행 명령은 D1 도구 선택과 실제 구현 뒤에 추가합니다. 모의 입력으로 먼저 검증하고 실물/다른 제품과 통합합니다.
+C99 및 Unity 비의존 C# 코덱과 교차 언어 검사를 구현했습니다. `python3 tools/check.py`로 공통 벡터·정상/손상 패킷·encode/decode 왕복을 검사합니다. C는 Address/UndefinedBehavior sanitizer를 함께 사용합니다. 실물 BLE 수신·센서 인식 성공을 의미하지 않습니다.
+
+[v1/v2 계약](spec/controller-v2.md)을 확인하세요. v1의 포핸드1·백핸드2·서브3과20바이트 배치는 유지하고, v2에서만 스매시4·발리5·슬라이스6·로브7·스킬8을 허용합니다. v1 수신기는 기존대로 미지원 버전을 거부해야 하며 v2 송신 펌웨어와 v2 지원 SDK를 함께 배포합니다.
 
 ## 개발할 기능과 제출 기준
 
@@ -19,7 +21,7 @@
 
 초기 담당 역할은 C / A 검토입니다. 실제 IMU·배선·펌웨어 SDK·Unity·Windows·런타임 버전은 D1에 [환경표](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/project/overview.md)와 결정 기록에 남깁니다.
 
-예상 폴더는 `spec/ · c/ · csharp/ · test-vectors/ · tests/`입니다. 아직 존재하지 않는 폴더와 실행 명령을 구현 완료로 해석하지 않습니다. 채택 도구와 실제 구현에 맞게 갱신합니다.
+`c/`는 C99 라이브러리, `Runtime/`은 netstandard2.1/Unity UPM 라이브러리, `tests/`와 `tools/check.py`는 독립 검사입니다. .NET10 SDK·C99 컴파일러·Python3를 사용합니다. Unity 소비자는 이 저장소의 검토한 Git SHA를 고정해 패키지로 사용합니다.
 
 ## 검증과 협업
 

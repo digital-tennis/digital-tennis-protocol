@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.20)
+project(digital_tennis_protocol C)
+add_library(dt_protocol STATIC c/src/dt_protocol.c)
+target_include_directories(dt_protocol PUBLIC c/include)
+target_compile_features(dt_protocol PUBLIC c_std_99)
+target_compile_options(dt_protocol PRIVATE -Wall -Wextra -Werror)
