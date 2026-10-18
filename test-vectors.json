@@ -236,10 +236,110 @@
       "expected": null
     },
     {
-      "name": "link_reply_no_actions",
+      "name": "link_reply_button_profile",
       "hex": "44 02 83 00 09 00 00 00 00 00 4d 00 01 00 00 00 00 00 ff 62",
-      "expected_error": "INVALID_KIND",
+      "expected_error": null,
       "expected": null
+    },
+    {
+      "name": "v1-button-kind1",
+      "hex": "44 01 02 00 01 00 00 00 00 00 09 00 01 00 00 00 00 00 ff 4d",
+      "expected_error": null
+    },
+    {
+      "name": "v1-button-kind2",
+      "hex": "44 01 02 00 01 00 00 00 00 00 09 00 02 00 00 00 00 00 ff 2b",
+      "expected_error": null
+    },
+    {
+      "name": "v1-button-kind3",
+      "hex": "44 01 02 00 01 00 00 00 00 00 09 00 03 00 00 00 00 00 ff f4",
+      "expected_error": null
+    },
+    {
+      "name": "v1-button-kind4",
+      "hex": "44 01 02 00 01 00 00 00 00 00 09 00 04 00 00 00 00 00 ff e7",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v1-button-kind5",
+      "hex": "44 01 02 00 01 00 00 00 00 00 09 00 05 00 00 00 00 00 ff 38",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v1-button-kind6",
+      "hex": "44 01 02 00 01 00 00 00 00 00 09 00 06 00 00 00 00 00 ff 5e",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v1-button-kind7",
+      "hex": "44 01 02 00 01 00 00 00 00 00 09 00 07 00 00 00 00 00 ff 81",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v1-button-kind8",
+      "hex": "44 01 02 00 01 00 00 00 00 00 09 00 08 00 00 00 00 00 ff 78",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v2-button-kind1",
+      "hex": "44 02 02 00 01 00 00 00 00 00 09 00 01 00 00 00 00 00 ff 33",
+      "expected_error": null
+    },
+    {
+      "name": "v2-button-kind2",
+      "hex": "44 02 02 00 01 00 00 00 00 00 09 00 02 00 00 00 00 00 ff 55",
+      "expected_error": null
+    },
+    {
+      "name": "v2-button-kind3",
+      "hex": "44 02 02 00 01 00 00 00 00 00 09 00 03 00 00 00 00 00 ff 8a",
+      "expected_error": null
+    },
+    {
+      "name": "v2-button-kind4",
+      "hex": "44 02 02 00 01 00 00 00 00 00 09 00 04 00 00 00 00 00 ff 99",
+      "expected_error": null
+    },
+    {
+      "name": "v2-button-kind5",
+      "hex": "44 02 02 00 01 00 00 00 00 00 09 00 05 00 00 00 00 00 ff 46",
+      "expected_error": null
+    },
+    {
+      "name": "v2-button-kind6",
+      "hex": "44 02 02 00 01 00 00 00 00 00 09 00 06 00 00 00 00 00 ff 20",
+      "expected_error": null
+    },
+    {
+      "name": "v2-button-kind7",
+      "hex": "44 02 02 00 01 00 00 00 00 00 09 00 07 00 00 00 00 00 ff ff",
+      "expected_error": null
+    },
+    {
+      "name": "v2-button-kind8",
+      "hex": "44 02 02 00 01 00 00 00 00 00 09 00 08 00 00 00 00 00 ff 06",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "link-input-profile-0",
+      "hex": "44 02 83 00 02 00 00 00 00 00 01 00 00 00 00 00 00 00 ff ee",
+      "expected_error": null
+    },
+    {
+      "name": "link-input-profile-1",
+      "hex": "44 02 83 00 02 00 00 00 00 00 01 00 01 00 00 00 00 00 ff 31",
+      "expected_error": null
+    },
+    {
+      "name": "link-input-profile-2",
+      "hex": "44 02 83 00 02 00 00 00 00 00 01 00 02 00 00 00 00 00 ff 57",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "link-input-profile-255",
+      "hex": "44 02 83 00 02 00 00 00 00 00 01 00 ff 00 00 00 00 00 ff aa",
+      "expected_error": "INVALID_KIND"
     }
   ],
   "sequence_cases": [
