@@ -1,1 +1,8 @@
-{"name":"com.digital-tennis.protocol","version":"0.2.0","displayName":"Digital Tennis Controller Protocol","unity":"6000.3","description":"Independent versioned controller packet codec; C and C# shared vectors."}
+{
+  "name": "com.digital-tennis.protocol",
+  "version": "0.2.0",
+  "displayName": "Digital Tennis Controller Protocol",
+  "unity": "6000.3",
+  "description": "Independent versioned controller packet codec; C and C# shared vectors.",
+  "license": "Apache-2.0"
+}

@@ -186,6 +186,60 @@
         "kind": 8,
         "version": 2
       }
+    },
+    {
+      "name": "link_probe_sensorless",
+      "hex": "44 02 82 00 09 00 00 00 00 00 4d 00 00 00 00 00 00 00 ff b3",
+      "expected_error": null,
+      "expected": {
+        "type": 130,
+        "eventId": 77,
+        "flags": 0
+      }
+    },
+    {
+      "name": "link_reply_sensorless",
+      "hex": "44 02 83 00 09 00 00 00 00 00 4d 00 00 00 00 00 00 00 ff bd",
+      "expected_error": null,
+      "expected": {
+        "type": 131,
+        "eventId": 77,
+        "flags": 0
+      }
+    },
+    {
+      "name": "link_reply_ready",
+      "hex": "44 02 83 03 09 00 00 00 00 00 4d 00 00 00 00 00 00 00 ff bb",
+      "expected_error": null,
+      "expected": {
+        "type": 131,
+        "eventId": 77,
+        "flags": 3
+      }
+    },
+    {
+      "name": "v1_rejects_link_probe",
+      "hex": "44 01 82 00 09 00 00 00 00 00 4d 00 00 00 00 00 00 00 ff cd",
+      "expected_error": "INVALID_TYPE",
+      "expected": null
+    },
+    {
+      "name": "link_probe_requires_nonce",
+      "hex": "44 02 82 00 09 00 00 00 00 00 00 00 00 00 00 00 00 00 ff f2",
+      "expected_error": "INVALID_FIELDS",
+      "expected": null
+    },
+    {
+      "name": "link_probe_no_sensor_flags",
+      "hex": "44 02 82 03 09 00 00 00 00 00 4d 00 00 00 00 00 00 00 ff b5",
+      "expected_error": "INVALID_FIELDS",
+      "expected": null
+    },
+    {
+      "name": "link_reply_no_actions",
+      "hex": "44 02 83 00 09 00 00 00 00 00 4d 00 01 00 00 00 00 00 ff 62",
+      "expected_error": "INVALID_KIND",
+      "expected": null
     }
   ],
   "sequence_cases": [

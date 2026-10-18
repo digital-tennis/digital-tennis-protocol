@@ -2,7 +2,7 @@ using System;
 
 namespace DigitalTennis.Protocol
 {
-    public enum PacketType : byte { Swing=1, Button=2, Status=3, Calibrate=128, Ack=129 }
+    public enum PacketType : byte { Swing=1, Button=2, Status=3, Calibrate=128, Ack=129, LinkProbe=130, LinkReply=131 }
     // v1 IDs remain unchanged. Additional explicit intents require v2.
     public enum SwingKind : byte { Forehand=1, Backhand=2, Serve=3, Smash=4, Volley=5, Slice=6, Lob=7, Skill=8 }
     public enum DecodeError { None, InvalidLength, InvalidMagic, UnsupportedVersion, BadCrc, InvalidType, InvalidFlags, InvalidKind, OutOfRange, InvalidFields }
@@ -37,11 +37,12 @@ namespace DigitalTennis.Protocol
                 case PacketType.Button:if(p.Kind<1||p.Kind>3)return DecodeError.InvalidKind;break;
                 case PacketType.Status:case PacketType.Calibrate:if(p.Kind!=0)return DecodeError.InvalidKind;break;
                 case PacketType.Ack:if(p.Kind>3)return DecodeError.InvalidKind;break;
+                case PacketType.LinkProbe:case PacketType.LinkReply:if(p.Version!=2)return DecodeError.InvalidType;if(p.Kind!=0)return DecodeError.InvalidKind;if(p.EventId==0)return DecodeError.InvalidFields;break;
                 default:return DecodeError.InvalidType;
             }
             if(p.Type!=PacketType.Swing&&(p.Power!=0||p.YawCdeg!=0||p.PitchCdeg!=0))return DecodeError.InvalidFields;
             if(p.Type==PacketType.Status&&p.EventId!=0)return DecodeError.InvalidFields;
-            if(p.Type==PacketType.Calibrate&&(p.Flags!=0||p.DeviceTimeMs!=0||p.Battery!=255))return DecodeError.InvalidFields;
+            if((p.Type==PacketType.Calibrate||p.Type==PacketType.LinkProbe)&&(p.Flags!=0||p.DeviceTimeMs!=0||p.Battery!=255))return DecodeError.InvalidFields;
             return DecodeError.None;
         }
         public static DecodeError Decode(byte[] data,out ControllerPacket packet)

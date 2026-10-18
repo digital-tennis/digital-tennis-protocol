@@ -9,4 +9,8 @@ int dt_sequence_newer(uint16_t value,uint16_t previous);
 dt_error dt_validate(const dt_packet *packet);
 dt_error dt_decode(const uint8_t *bytes,size_t length,dt_packet *packet);
 dt_error dt_encode(const dt_packet *packet,uint8_t *bytes,size_t length);
+/* Read-only secure-link GATT value: magic 0x44, schema 1, level 1..4, flags bonded=1/SC=2. */
+typedef struct {uint8_t level;uint8_t bonded;uint8_t secure_connections;} dt_link_security;
+dt_error dt_security_decode(const uint8_t *bytes,size_t length,dt_link_security *status);
+dt_error dt_security_encode(const dt_link_security *status,uint8_t *bytes,size_t length);
 #endif
