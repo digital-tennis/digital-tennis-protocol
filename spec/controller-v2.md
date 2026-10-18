@@ -70,7 +70,7 @@ DT-REQ-006: native helper는 보안 schema가 없거나 잘못된 기기를 호�
 선행 조건: 호환 테니스 펌웨어, 켜진 PC Bluetooth, 사용자 OS 승인 가능. 도구: game 무선 설정 또는 동봉 native helper. IMU는 본딩/왕복 확인의 선행 조건이 아니다.
 
 1. service UUID로 검색하고 현재 검색한 본인 기기만 선택한다.
-2. 연결→특성 발견→보호된 CCC 구독으로 OS 페어링을 진행한다. firmware는 L2이상/SC-only·bondable 설정과 BT settings를 사용한다.
+2. 연결→특성 발견→보호된 CCC 구독으로 OS 페어링을 진행한다. firmware는 L2이상·LE Secure Connections 페어링·bondable 설정과 BT settings를 사용한다. 화면 없는 보드의 현재 방식은 사용자 승인된 Just Works로, PIN/숫자 대조에 의한 MITM 인증을 제공하지 않는다. Zephyr 설정은 `CONFIG_BT_SMP_SC_PAIR_ONLY=y`이며 인증된 Level4를 강제하는 `SC_ONLY`와 구분한다.
 3. 보안 읽기4바이트를 검증하고 level≥2 및 bond=1일 때 연결 완료로 이동한다.
 4. LINK_PROBE를 보내 같은 nonce의 LINK_REPLY를 기다린다. 응답 왕복과 보정은 별도다.
 5. 센서가 없으면 ready/calibrated=false로 남아 있어야 한다. game 설정의 동작 테스트/저장은 금지한다.

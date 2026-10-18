@@ -27,7 +27,7 @@ python3 tools/check-security.py
 
 `Runtime/`: C# 코덱 · `c/`: C99 코덱 · `spec/`: 규격 · `tests/`, `tools/`: 교차 언어 검사
 
-[관리된 컨트롤러 ICD](spec/controller-v2.md), [v1 원본](spec/controller-v1.md), [공통 벡터](test-vectors.json)
+[관리된 컨트롤러 ICD](spec/controller-v2.md) (v1 호환 포함), [공통 벡터](test-vectors.json)
 
 ## 도움말과 기여
 
