@@ -1,0 +1,2 @@
+using System;using System.Linq;using DigitalTennis.Protocol;
+class SecurityProgram {static void Main(){if(LinkSecurity.Decode(null,out _)!=DecodeError.InvalidLength||LinkSecurity.Decode(new byte[3],out _)!=DecodeError.InvalidLength)throw new Exception("Length/null contract");string line;while((line=Console.ReadLine())!=null){var b=line.Split(' ',StringSplitOptions.RemoveEmptyEntries).Select(x=>Convert.ToByte(x,16)).ToArray();Console.WriteLine((int)LinkSecurity.Decode(b,out _));}}}

@@ -9,3 +9,4 @@ jobs:
         with:
           dotnet-version: 10.0.x
       - run: python3 tools/check.py
+      - run: python3 tools/check-security.py

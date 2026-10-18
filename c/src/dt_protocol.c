@@ -33,3 +33,22 @@ dt_error dt_encode(const dt_packet *p,uint8_t *b,size_t n){
  b[10]=(uint8_t)p->event_id;b[11]=(uint8_t)(p->event_id>>8);b[12]=p->kind;b[13]=p->power;
  uint16_t yaw=(uint16_t)p->yaw_cdeg,pitch=(uint16_t)p->pitch_cdeg;b[14]=(uint8_t)yaw;b[15]=(uint8_t)(yaw>>8);b[16]=(uint8_t)pitch;b[17]=(uint8_t)(pitch>>8);b[18]=p->battery;b[19]=dt_crc8(b,19);return DT_OK;
 }
+
+dt_error dt_security_decode(const uint8_t *b,size_t n,dt_link_security *s){
+ if(!s)return DT_FIELDS;
+ memset(s,0,sizeof(*s));
+ if(!b||n!=4)return DT_LENGTH;
+ if(b[0]!=0x44)return DT_MAGIC;
+ if(b[1]!=1)return DT_VERSION;
+ if(b[2]<1||b[2]>4)return DT_RANGE;
+ if(b[3]&~3)return DT_FLAGS;
+ if(b[2]<2&&(b[3]&3))return DT_FIELDS;
+ s->level=b[2];s->bonded=(b[3]&1)!=0;s->secure_connections=(b[3]&2)!=0;return DT_OK;
+}
+dt_error dt_security_encode(const dt_link_security *s,uint8_t *b,size_t n){
+ if(!s)return DT_FIELDS;
+ if(!b||n!=4)return DT_LENGTH;
+ if(s->bonded>1||s->secure_connections>1)return DT_FLAGS;
+ uint8_t v[4]={0x44,1,s->level,(uint8_t)(s->bonded|(s->secure_connections<<1))};
+ dt_link_security checked;dt_error e=dt_security_decode(v,4,&checked);if(e==DT_OK)memcpy(b,v,4);return e;
+}

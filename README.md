@@ -1,35 +1,38 @@
-# Digital Tennis 컨트롤러 통신 규격
+# Digital Tennis · 컨트롤러 인터페이스 규격
 
-보드와 PC가 공유하는 바이너리 규격, C 및 C# 코덱과 테스트 벡터를 담당하는 독립 제품 저장소입니다. 전체 프로젝트는 **외장 IMU를 별도로 부착한 NU40-DK**, Unity PC 게임, 1인 AI와 온라인 2인 대전을 12일·3명으로 개발합니다.
+펌웨어와 PC가 같은 패킷을 읽도록 GATT·20바이트 이벤트·보안 상태의 계약과 C/C# 코덱을 제공한다.
 
-## 현재 상태
+전체 제품은 NU40-DK에 **별도 외장 IMU**를 부착하는 라켓 컨트롤러와 Unity PC 테니스 게임으로 구성한다. 최초 계획은 **12일·3명**이다.
 
-C99 및 Unity 비의존 C# 코덱과 교차 언어 검사를 구현했습니다. `python3 tools/check.py`로 공통 벡터·정상/손상 패킷·encode/decode 왕복을 검사합니다. C는 Address/UndefinedBehavior sanitizer를 함께 사용합니다. 실물 BLE 수신·센서 인식 성공을 의미하지 않습니다.
+## 주요 기능
 
-[v1/v2 계약](spec/controller-v2.md)을 확인하세요. v1의 포핸드1·백핸드2·서브3과20바이트 배치는 유지하고, v2에서만 스매시4·발리5·슬라이스6·로브7·스킬8을 허용합니다. v1 수신기는 기존대로 미지원 버전을 거부해야 하며 v2 송신 펌웨어와 v2 지원 SDK를 함께 배포합니다.
+- v1 호환과 v2의8종 명시적 라켓 의도, CRC/범위/순번 검증
+- 센서 없는 LINK_PROBE/REPLY와 암호화·본딩 상태 읽기
+- Unity/Zephyr 비의존 라이브러리와 공통 오류 벡터
 
-## 개발할 기능과 제출 기준
+## 빠른 시작
 
-[초보 개발자용 상세 과제](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/products/digital-tennis-protocol.md)에서 상황·입력·출력·예제·예외·완료 기준을 확인합니다.
+Python3, C99 컴파일러, .NET10 SDK. C# 소비 라이브러리는 netstandard2.1.
 
-- [PR-01 하드웨어와 PC가 합의하는 계약 작성](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/products/digital-tennis-protocol.md#pr-01)
-- [PR-02 C와 C# 패킷 인코더 및 디코더](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/products/digital-tennis-protocol.md#pr-02)
-- [PR-03 공통 벡터와 순번 비교 검증](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/products/digital-tennis-protocol.md#pr-03)
-- [PR-04 버전과 소비 제품 의존성 관리](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/products/digital-tennis-protocol.md#pr-04)
+```sh
+python3 tools/check.py
+python3 tools/check-security.py
+```
 
-## 개발 환경과 예상 구조
+## 책임과 현재 범위
 
-초기 담당 역할은 C / A 검토입니다. 실제 IMU·배선·펌웨어 SDK·Unity·Windows·런타임 버전은 D1에 [환경표](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/project/overview.md)와 결정 기록에 남깁니다.
+패킷의 형식/의미만 소유한다. IMU 판정·BLE 연결·테니스 규칙은 소유하지 않는다. 코덱 검사 성공은 실제 본딩/IMU 인식의 증거가 아니다.
 
-`c/`는 C99 라이브러리, `Runtime/`은 netstandard2.1/Unity UPM 라이브러리, `tests/`와 `tools/check.py`는 독립 검사입니다. .NET10 SDK·C99 컴파일러·Python3를 사용합니다. Unity 소비자는 이 저장소의 검토한 Git SHA를 고정해 패키지로 사용합니다.
+## 구조와 문서
 
-## 검증과 협업
+`Runtime/`: C# 코덱 · `c/`: C99 코덱 · `spec/`: 규격 · `tests/`, `tools/`: 교차 언어 검사
 
-- [12일 WBS](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/planning/wbs.md)
-- [컨트롤러 계약](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/contracts/controller-protocol.md)
-- [온라인 계약](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/contracts/online-protocol.md)
-- [수용 테스트](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/testing/acceptance.md)
-- [브랜치·PR 작업 방법](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/guides/contributing.md)
-- [모든 제품과 의존 관계](https://github.com/digital-tennis/digital-tennis-docs/blob/main/docs/project/repositories.md)
+[관리된 컨트롤러 ICD](spec/controller-v2.md), [v1 원본](spec/controller-v1.md), [공통 벡터](test-vectors.json)
 
-라이선스는 코드와 제3자 자산 조건을 검토한 뒤 팀이 선택합니다.
+## 도움말과 기여
+
+재현 가능한 문제는 [이슈](https://github.com/digital-tennis/digital-tennis-protocol/issues)로 남긴다. 관리 주체는 [Digital Tennis](https://github.com/digital-tennis)이며 [기여 안내](CONTRIBUTING.md)를 따른다. 검증 커밋을 고정하고 실제 장치 성공·모의 검사·교차 빌드를 구분한다.
+
+## 라이선스
+
+프로젝트 자체 코드·문서는 **[Apache-2.0](LICENSE)**이다. [NOTICE](NOTICE)와 [외부 코드·자산 고지](THIRD_PARTY_NOTICES.md)를 함께 확인한다. 외부 자산에 Apache-2.0을 덮어쓰지 않는다.

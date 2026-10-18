@@ -1,0 +1,10 @@
+{
+  "documentId":"DT-ICD-23-10-00",
+  "characteristic":"6d7c1003-9d40-4cb7-a381-5e908be0a001",
+  "properties":["read"],
+  "permission":"encrypted",
+  "size":4,
+  "schema":1,
+  "ready":"level >= 2 and bonded",
+  "examples":[{"hex":"44 01 02 03","ready":true},{"hex":"44 01 01 00","ready":false},{"hex":"44 01 02 00","ready":false}]
+}
