@@ -81,7 +81,7 @@
     },
     {
       "name": "unsupported_version",
-      "hex": "44 02 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a 21",
+      "hex": "44 03 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a 0b",
       "expected_error": "UNSUPPORTED_VERSION",
       "expected": null
     },
@@ -136,6 +136,56 @@
         "flags": 2,
         "gameInputAllowed": false
       }
+    },
+    {
+      "name": "v2_smash",
+      "hex": "44 02 01 03 2a 00 40 e2 01 00 07 00 04 50 1e fb 2c 01 5a 8b",
+      "expected_error": null,
+      "expected": {
+        "type": 1,
+        "kind": 4,
+        "version": 2
+      }
+    },
+    {
+      "name": "v2_volley",
+      "hex": "44 02 01 03 2a 00 40 e2 01 00 07 00 05 50 1e fb 2c 01 5a 54",
+      "expected_error": null,
+      "expected": {
+        "type": 1,
+        "kind": 5,
+        "version": 2
+      }
+    },
+    {
+      "name": "v2_slice",
+      "hex": "44 02 01 03 2a 00 40 e2 01 00 07 00 06 50 1e fb 2c 01 5a 32",
+      "expected_error": null,
+      "expected": {
+        "type": 1,
+        "kind": 6,
+        "version": 2
+      }
+    },
+    {
+      "name": "v2_lob",
+      "hex": "44 02 01 03 2a 00 40 e2 01 00 07 00 07 50 1e fb 2c 01 5a ed",
+      "expected_error": null,
+      "expected": {
+        "type": 1,
+        "kind": 7,
+        "version": 2
+      }
+    },
+    {
+      "name": "v2_skill",
+      "hex": "44 02 01 03 2a 00 40 e2 01 00 07 00 08 50 1e fb 2c 01 5a 14",
+      "expected_error": null,
+      "expected": {
+        "type": 1,
+        "kind": 8,
+        "version": 2
+      }
     }
   ],
   "sequence_cases": [
@@ -159,5 +209,9 @@
       "new": 32778,
       "relation": "old"
     }
+  ],
+  "supported_wire_versions": [
+    1,
+    2
   ]
 }

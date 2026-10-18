@@ -1,0 +1,1 @@
+{"name":"DigitalTennis.Protocol.StandaloneChecks","includePlatforms":["Editor"],"defineConstraints":["DT_STANDALONE_CHECKS"],"noEngineReferences":true}
