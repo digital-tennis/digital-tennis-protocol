@@ -11,3 +11,7 @@ sequence 비교는0<((new-old)&65535)<32768이다. 이벤트 반복 전송은 se
 Service `6d7c1000-9d40-4cb7-a381-5e908be0a001`, Notify `6d7c1001-9d40-4cb7-a381-5e908be0a001`, Write-with-response `6d7c1002-9d40-4cb7-a381-5e908be0a001`. UUID/버전/실제 연결 상태를 확인한 뒤 구독한다. 보드 패킷에는 경기의 Near/Far·플레이어 권한이 없다.
 
 `python3 tools/check.py`는 보관된 공통 벡터와 시드107의 생성/손상 패킷을 C·C# 양쪽에 똑같이 전달하고 에러·모든 필드·왕복 바이트를 비교한다. 실행 보고서는 Git 밖 `.work/validation.json`에 기록한다. 실물 배선·라디오·Windows 실기 검증은 별도다. 원래12일·3명·별도 부착 외장IMU 조건을 유지한다.
+
+## 센서와 분리된 연결 통신 확인
+
+v2 type130 LINK_PROBE와131 LINK_REPLY는 같은 eventId(1..65535)로 요청/응답한다. LINK_PROBE의 flags/time/kind/power/각도는0, battery255이며, 응답은 현재 실제 ready/calibrated flags·기기시각을 담고 kind/power/각도는0이다. 외장 센서가 없어도 응답하며 센서 보정·라켓 의도·득점은 만들지 않는다. v1에서는 두 type을 거부한다. PC는 현재 연결의 미완료 nonce와2초 응답 제한을 확인하고, write 응답만으로 성공하지 않는다. 반복 응답/오래된 연결/지연된 nonce는 성공으로 처리하지 않는다. 센서 없는 연결/메시지 시험과 실제 게임 입력 저장은 별개다.
