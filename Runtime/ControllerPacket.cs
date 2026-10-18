@@ -5,6 +5,8 @@ namespace DigitalTennis.Protocol
     public enum PacketType : byte { Swing=1, Button=2, Status=3, Calibrate=128, Ack=129, LinkProbe=130, LinkReply=131 }
     // v1 IDs remain unchanged. Additional explicit intents require v2.
     public enum SwingKind : byte { Forehand=1, Backhand=2, Serve=3, Smash=4, Volley=5, Slice=6, Lob=7, Skill=8 }
+    public enum ButtonKind : byte { Confirm=1, Start=2, Pause=3, Serve=4, Forehand=5, Backhand=6, Skill=7 }
+    public enum ControllerInputProfile : byte { Motion=0, Buttons=1 }
     public enum DecodeError { None, InvalidLength, InvalidMagic, UnsupportedVersion, BadCrc, InvalidType, InvalidFlags, InvalidKind, OutOfRange, InvalidFields }
     public readonly struct ControllerPacket
     {
@@ -34,10 +36,10 @@ namespace DigitalTennis.Protocol
             switch(p.Type)
             {
                 case PacketType.Swing:if(p.Kind<1||p.Kind>(p.Version==1?3:8))return DecodeError.InvalidKind;break;
-                case PacketType.Button:if(p.Kind<1||p.Kind>3)return DecodeError.InvalidKind;break;
+                case PacketType.Button:if(p.Kind<1||p.Kind>(p.Version==1?3:7))return DecodeError.InvalidKind;break;
                 case PacketType.Status:case PacketType.Calibrate:if(p.Kind!=0)return DecodeError.InvalidKind;break;
                 case PacketType.Ack:if(p.Kind>3)return DecodeError.InvalidKind;break;
-                case PacketType.LinkProbe:case PacketType.LinkReply:if(p.Version!=2)return DecodeError.InvalidType;if(p.Kind!=0)return DecodeError.InvalidKind;if(p.EventId==0)return DecodeError.InvalidFields;break;
+                case PacketType.LinkProbe:case PacketType.LinkReply:if(p.Version!=2)return DecodeError.InvalidType;if(p.Kind>(p.Type==PacketType.LinkReply?1:0))return DecodeError.InvalidKind;if(p.EventId==0)return DecodeError.InvalidFields;break;
                 default:return DecodeError.InvalidType;
             }
             if(p.Type!=PacketType.Swing&&(p.Power!=0||p.YawCdeg!=0||p.PitchCdeg!=0))return DecodeError.InvalidFields;

@@ -7,7 +7,7 @@ dt_error dt_validate(const dt_packet *p){
  if(p->version!=1&&p->version!=2)return DT_VERSION;
  if(p->flags&~7)return DT_FLAGS;
  if((p->battery>100&&p->battery!=255)||p->power>100||p->yaw_cdeg < -18000||p->yaw_cdeg>18000||p->pitch_cdeg < -9000||p->pitch_cdeg>9000)return DT_RANGE;
- switch(p->type){case 1:if(p->kind<1||p->kind>(p->version==1?3:8))return DT_KIND;break;case 2:if(p->kind<1||p->kind>3)return DT_KIND;break;case 3:case 128:if(p->kind)return DT_KIND;break;case 129:if(p->kind>3)return DT_KIND;break;case 130:case 131:if(p->version!=2)return DT_TYPE;if(p->kind)return DT_KIND;if(!p->event_id)return DT_FIELDS;break;default:return DT_TYPE;}
+ switch(p->type){case 1:if(p->kind<1||p->kind>(p->version==1?3:8))return DT_KIND;break;case 2:if(p->kind<1||p->kind>(p->version==1?3:7))return DT_KIND;break;case 3:case 128:if(p->kind)return DT_KIND;break;case 129:if(p->kind>3)return DT_KIND;break;case 130:case 131:if(p->version!=2)return DT_TYPE;if(p->kind>(p->type==131?1:0))return DT_KIND;if(!p->event_id)return DT_FIELDS;break;default:return DT_TYPE;}
  if(p->type!=1&&(p->power||p->yaw_cdeg||p->pitch_cdeg))return DT_FIELDS;
  if(p->type==3&&p->event_id)return DT_FIELDS;
  if((p->type==128||p->type==130)&&(p->flags||p->device_ms||p->battery!=255))return DT_FIELDS;
