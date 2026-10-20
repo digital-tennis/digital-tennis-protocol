@@ -2,11 +2,12 @@ using System;
 
 namespace DigitalTennis.Protocol
 {
-    public enum PacketType : byte { Swing=1, Button=2, Status=3, Calibrate=128, Ack=129, LinkProbe=130, LinkReply=131 }
+    public enum PacketType : byte { Swing=1, Button=2, Status=3, Motion=4, ButtonDown=5, ButtonUp=6, Calibrate=128, Ack=129, LinkProbe=130, LinkReply=131 }
     // v1 IDs remain unchanged. Additional explicit intents require v2.
     public enum SwingKind : byte { Forehand=1, Backhand=2, Serve=3, Smash=4, Volley=5, Slice=6, Lob=7, Skill=8 }
     public enum ButtonKind : byte { Confirm=1, Start=2, Pause=3, Serve=4, Forehand=5, Backhand=6, Skill=7 }
-    public enum ControllerInputProfile : byte { Motion=0, Buttons=1 }
+    public enum MotionPattern : byte { HorizontalPositive=1, HorizontalNegative=2, OverheadDown=3, ShortRotation=4, ObliqueDown=5, ObliqueUp=6 }
+    public enum ControllerInputProfile : byte { Motion=0, Buttons=1, PhysicalMotion=2, PhysicalButtons=3 }
     public enum DecodeError { None, InvalidLength, InvalidMagic, UnsupportedVersion, BadCrc, InvalidType, InvalidFlags, InvalidKind, OutOfRange, InvalidFields }
     public readonly struct ControllerPacket
     {
@@ -17,7 +18,7 @@ namespace DigitalTennis.Protocol
         public readonly short YawCdeg,PitchCdeg;
         public ControllerPacket(byte version,PacketType type,byte flags,ushort sequence,uint deviceTimeMs,ushort eventId,byte kind,byte power,short yawCdeg,short pitchCdeg,byte battery)
         {Version=version;Type=type;Flags=flags;Sequence=sequence;DeviceTimeMs=deviceTimeMs;EventId=eventId;Kind=kind;Power=power;YawCdeg=yawCdeg;PitchCdeg=pitchCdeg;Battery=battery;}
-        public bool MotionReady=>Type==PacketType.Swing&&(Flags&3)==3;
+        public bool MotionReady=>(Type==PacketType.Swing||Type==PacketType.Motion)&&(Flags&3)==3;
     }
     public static class PacketCodec
     {
@@ -30,19 +31,26 @@ namespace DigitalTennis.Protocol
         public static bool Newer(ushort value,ushort previous){int delta=(value-previous)&65535;return delta>0&&delta<32768;}
         public static DecodeError Validate(ControllerPacket p)
         {
-            if(p.Version!=1&&p.Version!=2)return DecodeError.UnsupportedVersion;
+            if(p.Version!=1&&p.Version!=2&&p.Version!=3)return DecodeError.UnsupportedVersion;
             if((p.Flags&~7)!=0)return DecodeError.InvalidFlags;
             if(p.Battery>100&&p.Battery!=255||p.Power>100||p.YawCdeg < -18000||p.YawCdeg>18000||p.PitchCdeg < -9000||p.PitchCdeg>9000)return DecodeError.OutOfRange;
             switch(p.Type)
             {
-                case PacketType.Swing:if(p.Kind<1||p.Kind>(p.Version==1?3:8))return DecodeError.InvalidKind;break;
-                case PacketType.Button:if(p.Kind<1||p.Kind>(p.Version==1?3:7))return DecodeError.InvalidKind;break;
+                case PacketType.Swing:if(p.Version==3)return DecodeError.InvalidType;if(p.Kind<1||p.Kind>(p.Version==1?3:8))return DecodeError.InvalidKind;break;
+                case PacketType.Button:if(p.Version==3)return DecodeError.InvalidType;if(p.Kind<1||p.Kind>(p.Version==1?3:7))return DecodeError.InvalidKind;break;
+                case PacketType.Motion:case PacketType.ButtonDown:case PacketType.ButtonUp:
+                    if(p.Version!=3)return DecodeError.InvalidType;
+                    if(p.Kind<1||p.Kind>(p.Type==PacketType.Motion?6:5))return DecodeError.InvalidKind;
+                    if(p.EventId==0)return DecodeError.InvalidFields;break;
                 case PacketType.Status:case PacketType.Calibrate:if(p.Kind!=0)return DecodeError.InvalidKind;break;
                 case PacketType.Ack:if(p.Kind>3)return DecodeError.InvalidKind;break;
-                case PacketType.LinkProbe:case PacketType.LinkReply:if(p.Version!=2)return DecodeError.InvalidType;if(p.Kind>(p.Type==PacketType.LinkReply?1:0))return DecodeError.InvalidKind;if(p.EventId==0)return DecodeError.InvalidFields;break;
+                case PacketType.LinkProbe:case PacketType.LinkReply:
+                    if(p.Version==1)return DecodeError.InvalidType;
+                    if(p.Type==PacketType.LinkProbe?p.Kind!=0:p.Version==2?p.Kind>1:p.Kind<2||p.Kind>3)return DecodeError.InvalidKind;
+                    if(p.EventId==0)return DecodeError.InvalidFields;break;
                 default:return DecodeError.InvalidType;
             }
-            if(p.Type!=PacketType.Swing&&(p.Power!=0||p.YawCdeg!=0||p.PitchCdeg!=0))return DecodeError.InvalidFields;
+            if(p.Type!=PacketType.Swing&&p.Type!=PacketType.Motion&&(p.Power!=0||p.YawCdeg!=0||p.PitchCdeg!=0))return DecodeError.InvalidFields;
             if(p.Type==PacketType.Status&&p.EventId!=0)return DecodeError.InvalidFields;
             if((p.Type==PacketType.Calibrate||p.Type==PacketType.LinkProbe)&&(p.Flags!=0||p.DeviceTimeMs!=0||p.Battery!=255))return DecodeError.InvalidFields;
             return DecodeError.None;
@@ -51,7 +59,7 @@ namespace DigitalTennis.Protocol
         {
             packet=default;if(data==null||data.Length!=Size)return DecodeError.InvalidLength;
             if(data[0]!=0x44)return DecodeError.InvalidMagic;
-            if(data[1]!=1&&data[1]!=2)return DecodeError.UnsupportedVersion;
+            if(data[1]!=1&&data[1]!=2&&data[1]!=3)return DecodeError.UnsupportedVersion;
             if(Crc(data,19)!=data[19])return DecodeError.BadCrc;
             var p=new ControllerPacket(data[1],(PacketType)data[2],data[3],U16(data,4),U32(data,6),U16(data,10),data[12],data[13],unchecked((short)U16(data,14)),unchecked((short)U16(data,16)),data[18]);
             var error=Validate(p);if(error==DecodeError.None)packet=p;return error;
