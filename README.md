@@ -102,3 +102,7 @@ Unity 패키지 이름은 `com.digital-tennis.protocol`입니다. Git UPM 또는
 ## 라이선스
 
 직접 작성한 코드·문서는 [Apache-2.0](LICENSE)입니다. [NOTICE](NOTICE)와 [외부 코드 고지](THIRD_PARTY_NOTICES.md)를 함께 확인하세요.
+
+## 물리 컨트롤러 이벤트 v3
+
+[새 계약](spec/controller-v3.md)은6종 물리 회전 패턴과 번호별 버튼Down/Up을20바이트로 전달합니다. 서브·스매시·발리의 의미는 게임이 결정합니다. v1/v2의 기존 ID는 유지하고, v3 전용 type과 프로필로 혼동을 차단합니다.

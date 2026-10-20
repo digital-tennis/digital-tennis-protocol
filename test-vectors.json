@@ -81,7 +81,7 @@
     },
     {
       "name": "unsupported_version",
-      "hex": "44 03 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a 0b",
+      "hex": "44 04 01 03 2a 00 40 e2 01 00 07 00 01 50 1e fb 2c 01 5a dd",
       "expected_error": "UNSUPPORTED_VERSION",
       "expected": null
     },
@@ -340,6 +340,198 @@
       "name": "link-input-profile-255",
       "hex": "44 02 83 00 02 00 00 00 00 00 01 00 ff 00 00 00 00 00 ff aa",
       "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v3_motion_1",
+      "hex": "44 03 04 03 2a 00 40 e2 01 00 5b 00 01 50 1e fb 2c 01 5a 80",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 4,
+        "kind": 1,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_motion_2",
+      "hex": "44 03 04 03 2a 00 40 e2 01 00 5b 00 02 50 1e fb 2c 01 5a e6",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 4,
+        "kind": 2,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_motion_3",
+      "hex": "44 03 04 03 2a 00 40 e2 01 00 5b 00 03 50 1e fb 2c 01 5a 39",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 4,
+        "kind": 3,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_motion_4",
+      "hex": "44 03 04 03 2a 00 40 e2 01 00 5b 00 04 50 1e fb 2c 01 5a 2a",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 4,
+        "kind": 4,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_motion_5",
+      "hex": "44 03 04 03 2a 00 40 e2 01 00 5b 00 05 50 1e fb 2c 01 5a f5",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 4,
+        "kind": 5,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_motion_6",
+      "hex": "44 03 04 03 2a 00 40 e2 01 00 5b 00 06 50 1e fb 2c 01 5a 93",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 4,
+        "kind": 6,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_edge_5_1",
+      "hex": "44 03 05 00 2a 00 40 e2 01 00 5b 00 01 00 00 00 00 00 5a 25",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 5,
+        "kind": 1,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_edge_5_5",
+      "hex": "44 03 05 00 2a 00 40 e2 01 00 5b 00 05 00 00 00 00 00 5a 50",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 5,
+        "kind": 5,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_edge_6_1",
+      "hex": "44 03 06 00 2a 00 40 e2 01 00 5b 00 01 00 00 00 00 00 5a 37",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 6,
+        "kind": 1,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_edge_6_5",
+      "hex": "44 03 06 00 2a 00 40 e2 01 00 5b 00 05 00 00 00 00 00 5a 42",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 6,
+        "kind": 5,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "old_version_cannot_reinterpret_motion_1",
+      "hex": "44 01 04 03 2a 00 40 e2 01 00 5b 00 03 50 1e fb 2c 01 5a 6d",
+      "expected_error": "INVALID_TYPE"
+    },
+    {
+      "name": "old_version_cannot_reinterpret_motion_2",
+      "hex": "44 02 04 03 2a 00 40 e2 01 00 5b 00 03 50 1e fb 2c 01 5a 13",
+      "expected_error": "INVALID_TYPE"
+    },
+    {
+      "name": "v3_cannot_reinterpret_legacy_1",
+      "hex": "44 03 01 03 2a 00 40 e2 01 00 5b 00 03 50 1e fb 2c 01 5a 0f",
+      "expected_error": "INVALID_TYPE"
+    },
+    {
+      "name": "v3_cannot_reinterpret_legacy_2",
+      "hex": "44 03 02 03 2a 00 40 e2 01 00 5b 00 03 50 1e fb 2c 01 5a 1d",
+      "expected_error": "INVALID_TYPE"
+    },
+    {
+      "name": "v3_unknown_pattern_0",
+      "hex": "44 03 04 03 2a 00 40 e2 01 00 5b 00 00 50 1e fb 2c 01 5a 5f",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v3_unknown_pattern_7",
+      "hex": "44 03 04 03 2a 00 40 e2 01 00 5b 00 07 50 1e fb 2c 01 5a 4c",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v3_no_event_id",
+      "hex": "44 03 04 03 2a 00 40 e2 01 00 00 00 03 50 1e fb 2c 01 5a ec",
+      "expected_error": "INVALID_FIELDS"
+    },
+    {
+      "name": "v3_unknown_button",
+      "hex": "44 03 05 03 2a 00 40 e2 01 00 5b 00 06 50 1e fb 2c 01 5a 9d",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v3_button_payload_not_motion",
+      "hex": "44 03 05 03 2a 00 40 e2 01 00 5b 00 01 50 1e fb 2c 01 5a 8e",
+      "expected_error": "INVALID_FIELDS"
+    },
+    {
+      "name": "v3_profile_2",
+      "hex": "44 03 83 03 2a 00 40 e2 01 00 5b 00 02 00 00 00 00 00 5a 74",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 131,
+        "kind": 2,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_profile_3",
+      "hex": "44 03 83 03 2a 00 40 e2 01 00 5b 00 03 00 00 00 00 00 5a ab",
+      "expected_error": null,
+      "expected": {
+        "version": 3,
+        "type": 131,
+        "kind": 3,
+        "eventId": 91
+      }
+    },
+    {
+      "name": "v3_invalid_profile_0",
+      "hex": "44 03 83 03 2a 00 40 e2 01 00 5b 00 00 00 00 00 00 00 5a cd",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v3_invalid_profile_1",
+      "hex": "44 03 83 03 2a 00 40 e2 01 00 5b 00 01 00 00 00 00 00 5a 12",
+      "expected_error": "INVALID_KIND"
+    },
+    {
+      "name": "v3_invalid_profile_4",
+      "hex": "44 03 83 03 2a 00 40 e2 01 00 5b 00 04 00 00 00 00 00 5a b8",
+      "expected_error": "INVALID_KIND"
     }
   ],
   "sequence_cases": [
@@ -367,5 +559,10 @@
   "supported_wire_versions": [
     1,
     2
+  ],
+  "wire_versions": [
+    1,
+    2,
+    3
   ]
 }
